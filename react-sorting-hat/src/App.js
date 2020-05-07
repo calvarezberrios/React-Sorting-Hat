@@ -1,26 +1,53 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Link } from "react-router-dom";
+import SortingHat from "./components/SortingHat";
+import House from "./components/House";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      users: [],
+      curUser: {}
+    }
+  }
+
+  addUser = user => {
+    
+    console.log("CEA: App.js: addUser: ", user.name);
+
+    this.setState({
+      users: [
+        ...this.state.users,
+        user
+      ],
+      curUser: user
+    });
+
+
+    
+  }
+
+
+  render() {
+    return (
+      <div className = "app-container">
+        <Route exact path = "/">
+          <h1>Welcome to Hogwarts!</h1>
+          <h2>School of Witchcraft and Wizardry</h2>
+          <Link to = "/sorting-hat">Let's get Sorted!</Link>
+          
+
+        </Route>
+
+        <Route path = "/sorting-hat" >
+          <SortingHat users = {this.state.users} addUser = {this.addUser} />
+        </Route>
+        
+        <Route path = "/house">
+          <House user = {this.state.curUser} />
+        </Route>
+      </div>
+    );
+  }
 }
-
-export default App;
